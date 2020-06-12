@@ -1,4 +1,4 @@
-package io.github.final_project;
+package io.github.final_project.star;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,20 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class FragSearch extends Fragment
+import io.github.final_project.R;
+
+public class FragStar extends Fragment
 {
     private View view;
 
-    public static FragSearch newInstance()
+    public FragStar()
     {
-        return new FragSearch();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        view = inflater.inflate(R.layout.frag_search, container, false);
+        view = inflater.inflate(R.layout.frag_star, container, false);
 
         return view;
     }

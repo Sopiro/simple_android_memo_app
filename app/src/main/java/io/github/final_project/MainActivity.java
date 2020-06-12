@@ -2,16 +2,20 @@ package io.github.final_project;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
 {
-    private FragmentPagerAdapter fragmentPagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -19,7 +23,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         ViewPager viewPager = findViewById(R.id.view_pager);
-        fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        FragmentPagerAdapter fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
