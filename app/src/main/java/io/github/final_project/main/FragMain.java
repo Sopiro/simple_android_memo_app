@@ -1,6 +1,7 @@
 package io.github.final_project.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.final_project.DBHelper;
 import io.github.final_project.R;
 import io.github.final_project.Utils;
 
@@ -32,6 +34,8 @@ public class FragMain extends Fragment
 
     private ImageButton buttonAdd;
 
+    private DBHelper dbHelper;
+
     public FragMain()
     {
         items = new ArrayList<>();
@@ -43,10 +47,8 @@ public class FragMain extends Fragment
     {
         view = inflater.inflate(R.layout.frag_main, container, false);
 
-        context = view.getContext();
-
         recyclerView = view.findViewById(R.id.rv);
-        linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         recyclerAdapter = new RecyclerAdapter(items);
@@ -54,13 +56,24 @@ public class FragMain extends Fragment
 
         buttonAdd = view.findViewById(R.id.main_btn_add);
 
+        dbHelper = new DBHelper(getContext());
+
         // 메모 추가 버튼
         buttonAdd.setOnClickListener(v ->
         {
-            items.add(new ListItem(R.mipmap.ic_launcher, ("" + System.nanoTime()).hashCode() + "", "Asd"));
-            recyclerAdapter.notifyDataSetChanged();
+            Intent intent = new Intent(getContext(), NewMemoActivity.class);
+            getContext().startActivity(intent);
+
+//            items.add(new ListItem(R.mipmap.ic_launcher, ("" + System.nanoTime()).hashCode() + "", "Asd"));
+//            recyclerAdapter.notifyDataSetChanged();
         });
 
+
         return view;
+    }
+
+    private void UpdateIntoList()
+    {
+
     }
 }
