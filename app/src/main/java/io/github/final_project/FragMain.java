@@ -1,4 +1,4 @@
-package io.github.final_project.main;
+package io.github.final_project;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,16 +12,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import io.github.final_project.DBHelper;
-import io.github.final_project.R;
-import io.github.final_project.Utils;
-
-public class FragMain extends Fragment
+public class FragMain extends BaseFragment
 {
     private View view;
 
@@ -71,8 +65,6 @@ public class FragMain extends Fragment
     public void onResume()
     {
         super.onResume();
-
-        Utils.log("재시작");
 
         updateList();
         recyclerAdapter.notifyDataSetChanged();

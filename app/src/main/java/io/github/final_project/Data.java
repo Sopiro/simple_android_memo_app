@@ -1,4 +1,4 @@
-package io.github.final_project.main;
+package io.github.final_project;
 
 import java.util.ArrayList;
 import java.util.List;

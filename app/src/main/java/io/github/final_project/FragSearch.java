@@ -1,4 +1,4 @@
-package io.github.final_project.search;
+package io.github.final_project;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

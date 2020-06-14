@@ -1,36 +1,27 @@
-package io.github.final_project.main;
+package io.github.final_project;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import io.github.final_project.DBHelper;
-import io.github.final_project.R;
-import io.github.final_project.Utils;
-
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>
+public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
 {
-    private FragMain parent;
+    private BaseFragment parent;
 
-    public RecyclerAdapter(FragMain parent)
+    public RecyclerAdapter(BaseFragment parent)
     {
         this.parent = parent;
     }
 
     @NonNull
     @Override
-    public RecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
 
@@ -47,7 +38,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
      * itemView to reflect the item at the given position.
      * */
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapter.MyViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
         holder.icon.setImageResource(R.drawable.ic_fiber_manual_record_24px);
         holder.title.setText(Data.getInstance().items.get(position).getTitle());
@@ -76,11 +67,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             dlg.setMessage(R.string.dlg_content);
             dlg.setPositiveButton(R.string.yes, (dialog, which) ->
             {
-                int position1 = holder.getAdapterPosition();
+                int pos = holder.getAdapterPosition();
 
-                new DBHelper(parent.getContext()).deleteMemo(Data.getInstance().items.get(position1).getCreationDate());
+                new DBHelper(parent.getContext()).deleteMemo(Data.getInstance().items.get(pos).getCreationDate());
                 parent.updateList();
-                notifyItemRemoved(position1);
+                notifyItemRemoved(pos);
             });
 
             dlg.setNegativeButton(R.string.no, null);
@@ -94,35 +85,5 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public int getItemCount()
     {
         return Data.getInstance().items == null ? 0 : Data.getInstance().items.size();
-    }
-
-    public void removeItem(int pos)
-    {
-        try
-        {
-            Data.getInstance().items.remove(pos);
-            notifyItemRemoved(pos);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    class MyViewHolder extends RecyclerView.ViewHolder
-    {
-        private LinearLayout outline;
-        private ImageView icon;
-        private TextView title;
-        private TextView lastDate;
-
-        MyViewHolder(@NonNull View itemView)
-        {
-            super(itemView);
-
-            this.outline = itemView.findViewById(R.id.list_item_outline);
-            this.icon = itemView.findViewById(R.id.list_item_icon);
-            this.title = itemView.findViewById(R.id.list_item_title);
-            this.lastDate = itemView.findViewById(R.id.list_item_date);
-        }
     }
 }

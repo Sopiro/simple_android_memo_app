@@ -1,11 +1,9 @@
-package io.github.final_project.main;
+package io.github.final_project;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,10 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import io.github.final_project.DBHelper;
-import io.github.final_project.R;
-import io.github.final_project.Utils;
 
 public class MemoActivity extends AppCompatActivity
 {
