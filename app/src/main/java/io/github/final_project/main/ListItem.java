@@ -1,16 +1,26 @@
 package io.github.final_project.main;
 
+import io.github.final_project.Utils;
+
 public class ListItem
 {
     private int icon;
     private String title;
-    private String date;
+    private String lastDate;
+    private String creationDate;
 
-    public ListItem(int icon, String title, String date)
+    public ListItem(String title, String creationDate, String lastDate)
     {
-        this.icon = icon;
         this.title = title;
-        this.date = date;
+        this.creationDate = creationDate;
+        this.lastDate = lastDate;
+
+        updateIcon();
+    }
+
+    public void updateIcon()
+    {
+        icon = Utils.getHashColor(title);
     }
 
     public int getIcon()
@@ -33,13 +43,25 @@ public class ListItem
         this.title = title;
     }
 
-    public String getDate()
+    public String getLastDate()
     {
-        return date;
+        Utils.log(lastDate);
+
+        return lastDate;
     }
 
-    public void setDate(String date)
+    public void setLastDate(String lastDate)
     {
-        this.date = date;
+        this.lastDate = lastDate;
+    }
+
+    public String getCreationDate()
+    {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate)
+    {
+        this.creationDate = creationDate;
     }
 }

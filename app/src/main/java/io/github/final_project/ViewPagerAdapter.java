@@ -1,7 +1,5 @@
 package io.github.final_project;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,7 +19,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter
     {
         super(fm);
 
-        fragments = new Fragment[] {new FragMain(), new FragSearch(), new FragStar()};
+        fragments = new Fragment[]{new FragMain(), new FragSearch(), new FragStar()};
     }
 
     @NonNull
