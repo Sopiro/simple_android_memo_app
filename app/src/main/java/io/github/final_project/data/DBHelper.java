@@ -1,8 +1,10 @@
-package io.github.final_project;
+package io.github.final_project.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import io.github.final_project.Utils;
 
 public class DBHelper extends SQLiteOpenHelper
 {

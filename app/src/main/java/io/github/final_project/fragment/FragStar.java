@@ -1,29 +1,36 @@
-package io.github.final_project;
+package io.github.final_project.fragment;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FragMain extends BaseFragment
+import io.github.final_project.data.DBHelper;
+import io.github.final_project.data.Data;
+import io.github.final_project.R;
+import io.github.final_project.Utils;
+
+public class FragStar extends BaseFragment
 {
     private View view;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private RecyclerAdapter recyclerAdapter;
-    private ImageButton btnAdd;
-    private TextView tvEncourage;
+
+    private LinearLayout llStars;
+    private ImageView[] ivStars;
+
+    private int stars = 0;
 
     private DBHelper dbHelper;
     private SQLiteDatabase db;
@@ -32,33 +39,64 @@ public class FragMain extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        view = inflater.inflate(R.layout.frag_main, container, false);
+        view = inflater.inflate(R.layout.frag_star, container, false);
 
-        recyclerView = view.findViewById(R.id.main_rv);
+        llStars = view.findViewById(R.id.star_stars);
+        ivStars = new ImageView[]{view.findViewById(R.id.star_star1), view.findViewById(R.id.star_star2), view.findViewById(R.id.star_star3)};
+
+        llStars.setOnClickListener(v ->
+        {
+            stars++;
+            if (stars >= 4) stars = 0;
+
+            updateStars();
+        });
+
+        recyclerView = view.findViewById(R.id.star_rv);
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         recyclerAdapter = new RecyclerAdapter(this);
         recyclerView.setAdapter(recyclerAdapter);
 
-        btnAdd = view.findViewById(R.id.main_btn_add);
-        tvEncourage = view.findViewById(R.id.main_encourage);
-
         dbHelper = new DBHelper(getContext());
-
-//        resetDB();
-
-        // 메모 추가 버튼
-        btnAdd.setOnClickListener(v ->
-        {
-            Intent intent = new Intent(getContext(), MemoActivity.class);
-
-            startActivityForResult(intent, 1000);
-        });
 
         updateList();
 
         return view;
+    }
+
+    private void updateStars()
+    {
+        int target = stars == 0 ? R.drawable.ic_star_border_24px : R.drawable.ic_star_24px;
+        int counts = stars == 0 ? ivStars.length : stars;
+
+        for (int i = 0; i < counts; i++)
+            ivStars[i].setImageResource(target);
+
+        updateList();
+    }
+
+    @Override
+    public void updateList()
+    {
+        Data.getInstance().items.clear();
+
+        db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM memo WHERE star = " + stars, null);
+
+        while (cursor.moveToNext())
+        {
+            ListItem item = new ListItem(cursor.getString(0), cursor.getString(3), cursor.getString(4));
+
+            Utils.log(stars);
+
+            Data.getInstance().items.add(item);
+        }
+
+        recyclerAdapter.notifyDataSetChanged();
+        db.close();
     }
 
     @Override
@@ -67,50 +105,5 @@ public class FragMain extends BaseFragment
         super.onResume();
 
         updateList();
-        recyclerAdapter.notifyDataSetChanged();
-    }
-
-    public void updateList()
-    {
-        Data.getInstance().items.clear();
-
-        db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT * FROM memo", null);
-
-        while (cursor.moveToNext())
-        {
-            ListItem item = new ListItem(cursor.getString(0), cursor.getString(3), cursor.getString(4));
-
-            Data.getInstance().items.add(item);
-        }
-
-        if (Data.getInstance().items.size() != 0)
-            tvEncourage.setVisibility(View.INVISIBLE);
-        else
-            tvEncourage.setVisibility(View.VISIBLE);
-
-        db.close();
-    }
-
-    private void resetDB()
-    {
-        db = dbHelper.getWritableDatabase();
-
-        dbHelper.onUpgrade(db, 1, 2);
-
-        db.close();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        switch (requestCode)
-        {
-            case 1000:
-                break;
-            case 1001:
-                break;
-        }
     }
 }

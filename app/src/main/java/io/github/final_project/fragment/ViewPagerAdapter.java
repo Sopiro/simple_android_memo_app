@@ -1,4 +1,4 @@
-package io.github.final_project;
+package io.github.final_project.fragment;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

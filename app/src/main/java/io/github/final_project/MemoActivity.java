@@ -16,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.github.final_project.data.DBHelper;
+import io.github.final_project.data.Data;
+
 public class MemoActivity extends AppCompatActivity
 {
     private Context context;

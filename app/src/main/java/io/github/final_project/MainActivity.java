@@ -2,17 +2,13 @@ package io.github.final_project;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.github.final_project.fragment.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
 {

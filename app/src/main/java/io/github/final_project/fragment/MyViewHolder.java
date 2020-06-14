@@ -1,4 +1,4 @@
-package io.github.final_project;
+package io.github.final_project.fragment;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import io.github.final_project.R;
 
 public class MyViewHolder extends RecyclerView.ViewHolder
 {

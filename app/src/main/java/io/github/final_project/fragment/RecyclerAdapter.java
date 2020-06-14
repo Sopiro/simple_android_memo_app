@@ -1,4 +1,4 @@
-package io.github.final_project;
+package io.github.final_project.fragment;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -9,6 +9,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import io.github.final_project.MemoActivity;
+import io.github.final_project.R;
+import io.github.final_project.Utils;
+import io.github.final_project.data.DBHelper;
+import io.github.final_project.data.Data;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
 {
