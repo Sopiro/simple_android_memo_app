@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.HashMap;
 
+import io.github.final_project.R;
 import io.github.final_project.Utils;
 
 public class DBHelper extends SQLiteOpenHelper
@@ -14,30 +15,29 @@ public class DBHelper extends SQLiteOpenHelper
     private static final String DB_NAME = "final";
     public static final String TABLE_NAME = "memo";
 
-    private static final HashMap<Integer, String[]> schema;
+    private static final HashMap<Integer, String[]> schema = new HashMap<>();
 
     private SQLiteDatabase db;
-
-    static
-    {
-        schema = new HashMap<>();
-        schema.put(1, new String[]{"title", "varchar(100) not null"});
-        schema.put(2, new String[]{"content", "text not null"});
-        schema.put(3, new String[]{"tags", "text"});
-        schema.put(4, new String[]{"creation_date", "datetime not null primary key"});
-        schema.put(5, new String[]{"last_date", "datetime not null"});
-        schema.put(6, new String[]{"star", "int not null"});
-    }
 
     public DBHelper(Context context)
     {
         super(context, DB_NAME, null, 1);
+
+        if (schema.size() != 6)
+        {
+            schema.put(1, context.getResources().getStringArray(R.array.db_col_1));
+            schema.put(2, context.getResources().getStringArray(R.array.db_col_2));
+            schema.put(3, context.getResources().getStringArray(R.array.db_col_3));
+            schema.put(4, context.getResources().getStringArray(R.array.db_col_4));
+            schema.put(5, context.getResources().getStringArray(R.array.db_col_5));
+            schema.put(6, context.getResources().getStringArray(R.array.db_col_6));
+        }
     }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE " + TABLE_NAME + "(");
+        StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(");
         for (int i = 1; i <= schema.size(); i++)
         {
             String[] line = schema.get(i);
@@ -59,16 +59,16 @@ public class DBHelper extends SQLiteOpenHelper
         onCreate(db);
     }
 
-    public Cursor select(SQLiteDatabase db, int... columns)
+    public Cursor select(SQLiteDatabase db, int... select)
     {
         StringBuilder sql = new StringBuilder("SELECT ");
 
-        if (columns.length == 1 && columns[0] == -1)
+        if (select.length == 1 && select[0] == -1)
         {
             sql.append("* FROM " + TABLE_NAME);
         } else
         {
-            for (int column : columns)
+            for (int column : select)
             {
                 String[] line = schema.get(column);
                 assert line != null;
@@ -82,16 +82,16 @@ public class DBHelper extends SQLiteOpenHelper
         return db.rawQuery(sql.toString(), null);
     }
 
-    public Cursor selectWhere(SQLiteDatabase db, int thisColumn, String equalsToThis, int... columns)
+    public Cursor selectWhere(SQLiteDatabase db, int thisColumn, String equalsToThis, int... select)
     {
         StringBuilder sql = new StringBuilder("SELECT ");
 
-        if (columns.length == 1 && columns[0] == -1)
+        if (select.length == 1 && select[0] == -1)
         {
             sql.append("* FROM " + TABLE_NAME);
         } else
         {
-            for (int column : columns)
+            for (int column : select)
             {
                 String[] line = schema.get(column);
                 assert line != null;
@@ -103,6 +103,31 @@ public class DBHelper extends SQLiteOpenHelper
         }
 
         sql.append(" WHERE ").append(schema.get(thisColumn)[0]).append(" = '").append(equalsToThis).append("'");
+
+        return db.rawQuery(sql.toString(), null);
+    }
+
+    public Cursor selectWhereLike(SQLiteDatabase db, int thisColumn, String looksLikeThis, int... select)
+    {
+        StringBuilder sql = new StringBuilder("SELECT ");
+
+        if (select.length == 1 && select[0] == -1)
+        {
+            sql.append("* FROM " + TABLE_NAME);
+        } else
+        {
+            for (int column : select)
+            {
+                String[] line = schema.get(column);
+                assert line != null;
+
+                sql.append(line[0]).append(", ");
+            }
+
+            sql = new StringBuilder(sql.substring(0, sql.length() - 2) + " FROM " + TABLE_NAME);
+        }
+
+        sql.append(" WHERE ").append(schema.get(thisColumn)[0]).append(" LIKE '").append(looksLikeThis).append("'");
 
         return db.rawQuery(sql.toString(), null);
     }

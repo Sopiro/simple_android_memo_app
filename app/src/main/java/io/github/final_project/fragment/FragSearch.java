@@ -96,13 +96,18 @@ public class FragSearch extends BaseFragment
 
         db = dbHelper.getReadableDatabase();
 
-        String regex = etSearch.getText().toString();
+        String pattern = etSearch.getText().toString();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + DBHelper.TABLE_NAME + " WHERE " + items[currentItem] + " REGEXP '" + regex + "'", null);
+        if (currentItem != 1)
+            pattern = "%" + pattern + "%";
+        else
+            pattern = "%#" + pattern + "#%";
+
+        Cursor cursor = dbHelper.selectWhereLike(db, Integer.valueOf(items[currentItem]), pattern, 1, 4, 5);
 
         while (cursor.moveToNext())
         {
-            ListItem item = new ListItem(cursor.getString(0), cursor.getString(3), cursor.getString(4));
+            ListItem item = new ListItem(cursor.getString(0), cursor.getString(1), cursor.getString(2));
 
             Data.getData().add(item);
         }
@@ -123,6 +128,5 @@ public class FragSearch extends BaseFragment
         super.onResume();
 
         updateList();
-        Utils.log("search" + Data.getData().size());
     }
 }

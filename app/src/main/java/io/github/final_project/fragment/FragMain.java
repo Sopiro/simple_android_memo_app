@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import io.github.final_project.MemoActivity;
 import io.github.final_project.R;
-import io.github.final_project.Utils;
 import io.github.final_project.data.DBHelper;
 import io.github.final_project.data.Data;
 
@@ -116,6 +115,5 @@ public class FragMain extends BaseFragment
         super.onResume();
 
         updateList();
-        Utils.log("main" + Data.getData().size());
     }
 }

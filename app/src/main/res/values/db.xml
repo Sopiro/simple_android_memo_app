@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="db_col_1">
+        <item>title</item>
+        <item>varchar(100) not null</item>
+    </string-array>
+    <string-array name="db_col_2">
+        <item>content</item>
+        <item>text not null</item>
+    </string-array>
+    <string-array name="db_col_3">
+        <item>tags</item>
+        <item>text</item>
+    </string-array>
+    <string-array name="db_col_4">
+        <item>creation_date</item>
+        <item>datetime not null primary key</item>
+    </string-array>
+    <string-array name="db_col_5">
+        <item>last_date</item>
+        <item>datetime not null</item>
+    </string-array>
+    <string-array name="db_col_6">
+        <item>star</item>
+        <item>int not null</item>
+    </string-array>
+
+</resources>

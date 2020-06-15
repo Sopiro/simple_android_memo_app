@@ -31,13 +31,13 @@ public class Utils
     {
         msg = msg == null ? "null!" : msg;
 
-        try
-        {
-            throw new Exception();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            throw new Exception();
+//        } catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
 
         Log.d("@@@", msg.toString());
     }

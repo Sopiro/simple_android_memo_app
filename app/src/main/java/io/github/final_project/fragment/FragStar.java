@@ -82,7 +82,7 @@ public class FragStar extends BaseFragment
 
         db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = dbHelper.selectWhere(db, 6, "" + stars, 1, 4, 5);
+        Cursor cursor = dbHelper.selectWhere(db, 6, String.valueOf(stars), 1, 4, 5);
 
         while (cursor.moveToNext())
         {
@@ -101,6 +101,5 @@ public class FragStar extends BaseFragment
         super.onResume();
 
         updateStars();
-        Utils.log("star" + Data.getData().size());
     }
 }

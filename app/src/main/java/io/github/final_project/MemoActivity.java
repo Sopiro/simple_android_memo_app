@@ -133,7 +133,7 @@ public class MemoActivity extends AppCompatActivity
         Pattern pattern = Pattern.compile("\\#([0-9a-zA-Z가-힣^s]*)");
         Matcher matcher = pattern.matcher(content);
 
-        tags = "";
+        tags = "#";
 
         while (matcher.find())
         {
@@ -141,12 +141,8 @@ public class MemoActivity extends AppCompatActivity
             if (tag.length() == 1)
                 continue;
 
-            tags += tag.substring(1) + " ";
+            tags += tag.substring(1) + "#";
         }
-
-//        Utils.log("title : " + title);
-//        Utils.log("content : " + content);
-//        Utils.log("tags : " + tags);
     }
 
     private void loadData(String creationDate)
