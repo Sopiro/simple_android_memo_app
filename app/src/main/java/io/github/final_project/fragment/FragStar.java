@@ -82,11 +82,11 @@ public class FragStar extends BaseFragment
 
         db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + DBHelper.TABLE_NAME + " WHERE star = " + stars, null);
+        Cursor cursor = dbHelper.selectWhere(db, 6, "" + stars, 1, 4, 5);
 
         while (cursor.moveToNext())
         {
-            ListItem item = new ListItem(cursor.getString(0), cursor.getString(3), cursor.getString(4));
+            ListItem item = new ListItem(cursor.getString(0), cursor.getString(1), cursor.getString(2));
 
             Data.getData().add(item);
         }

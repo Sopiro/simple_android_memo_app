@@ -153,9 +153,7 @@ public class MemoActivity extends AppCompatActivity
     {
         db = dbHelper.getReadableDatabase();
 
-        String sql = "SELECT * FROM memo WHERE creation_date = '" + creationDate + "'";
-
-        Cursor cursor = db.rawQuery(sql, null);
+        Cursor cursor = dbHelper.selectWhere(db, 4, creationDate, -1);
 
         while (cursor.moveToNext())
         {

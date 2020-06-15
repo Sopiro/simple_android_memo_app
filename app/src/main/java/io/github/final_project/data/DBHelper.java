@@ -84,11 +84,11 @@ public class DBHelper extends SQLiteOpenHelper
 
     public Cursor selectWhere(SQLiteDatabase db, int thisColumn, String equalsToThis, int... columns)
     {
-        String sql = "SELECT ";
+        StringBuilder sql = new StringBuilder("SELECT ");
 
         if (columns.length == 1 && columns[0] == -1)
         {
-            sql += "* FROM " + TABLE_NAME;
+            sql.append("* FROM " + TABLE_NAME);
         } else
         {
             for (int column : columns)
@@ -96,15 +96,16 @@ public class DBHelper extends SQLiteOpenHelper
                 String[] line = schema.get(column);
                 assert line != null;
 
-                sql += line[0] + ", ";
+                sql.append(line[0]).append(", ");
             }
 
-            sql = sql.substring(0, sql.length() - 2) + " FROM " + TABLE_NAME;
+            sql = new StringBuilder(sql.substring(0, sql.length() - 2) + " FROM " + TABLE_NAME);
         }
 
-        return db.rawQuery(sql, null);
-    }
+        sql.append(" WHERE ").append(schema.get(thisColumn)[0]).append(" = '").append(equalsToThis).append("'");
 
+        return db.rawQuery(sql.toString(), null);
+    }
 
     public void updateMemo(String creationDate, String title, String content, String tags, int stars)
     {
