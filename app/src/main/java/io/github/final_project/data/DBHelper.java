@@ -79,6 +79,8 @@ public class DBHelper extends SQLiteOpenHelper
             sql = new StringBuilder(sql.substring(0, sql.length() - 2) + " FROM " + TABLE_NAME);
         }
 
+        sql.append(" ORDER BY " + schema.get(4)[0] + " DESC");
+
         return db.rawQuery(sql.toString(), null);
     }
 
@@ -103,6 +105,7 @@ public class DBHelper extends SQLiteOpenHelper
         }
 
         sql.append(" WHERE ").append(schema.get(thisColumn)[0]).append(" = '").append(equalsToThis).append("'");
+        sql.append(" ORDER BY " + schema.get(4)[0] + " DESC");
 
         return db.rawQuery(sql.toString(), null);
     }
@@ -128,6 +131,7 @@ public class DBHelper extends SQLiteOpenHelper
         }
 
         sql.append(" WHERE ").append(schema.get(thisColumn)[0]).append(" LIKE '").append(looksLikeThis).append("'");
+        sql.append(" ORDER BY " + schema.get(4)[0] + " DESC");
 
         return db.rawQuery(sql.toString(), null);
     }

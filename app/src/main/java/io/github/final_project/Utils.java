@@ -9,6 +9,8 @@ import java.util.Date;
 
 public class Utils
 {
+    private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
     public static int getHashColor(String string, int transparency)
     {
         // Generate hash color based on title
@@ -54,8 +56,8 @@ public class Utils
 
     public static String getFormattedCurrentTime()
     {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat(DATETIME_FORMAT);
 
-        return formatter.format(new Date(System.currentTimeMillis() + 32400000));
+        return formatter.format(new Date());
     }
 }
