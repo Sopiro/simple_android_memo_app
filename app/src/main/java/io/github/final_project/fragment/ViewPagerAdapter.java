@@ -7,13 +7,22 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter
 {
-    private static final int NUM_TABS = 3;
+    private static final int NUM_FRAGMENTS = 3;
 
     private Fragment[] fragments;
 
+    /*
+    * Ctrl + Q
+    *
+    * Constructor for FragmentPagerAdapter.
+    * If BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT is passed in, then only the current Fragment is in the Lifecycle.State.RESUMED state.
+    * All other fragments are capped at Lifecycle.State.STARTED. If BEHAVIOR_SET_USER_VISIBLE_HINT is passed,
+    * all fragments are in the Lifecycle.State.RESUMED state and there will be callbacks to Fragment.setUserVisibleHint(boolean).
+    *
+    * */
     public ViewPagerAdapter(@NonNull FragmentManager fm)
     {
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
         fragments = new Fragment[]{new FragMain(), new FragSearch(), new FragStar()};
     }
@@ -27,11 +36,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter
 //        switch (position)
 //        {
 //            case 0:
-//                return FragMain.newInstance();
+//                return new FragMain();
 //            case 1:
-//                return FragSearch.newInstance();
+//                return new FragSearch();
 //            case 2:
-//                return FragStar.newInstance();
+//                return new FragStar();
 //            default:
 //                return null;
 //        }
@@ -40,6 +49,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter
     @Override
     public int getCount()
     {
-        return NUM_TABS;
+        return NUM_FRAGMENTS;
     }
 }

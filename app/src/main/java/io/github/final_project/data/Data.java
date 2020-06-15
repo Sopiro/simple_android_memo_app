@@ -3,21 +3,22 @@ package io.github.final_project.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.final_project.Utils;
 import io.github.final_project.fragment.ListItem;
 
 public class Data
 {
-    private static final Data me = new Data();
+    private static List<ListItem> items = new ArrayList<>();
 
-    public List<ListItem> items;
-
-    private Data()
+    public static List<ListItem> getData(int a)
     {
-        items = new ArrayList<>();
+        Utils.log(a + ", " + items.size());
+
+        return items;
     }
 
-    public static Data getInstance()
+    public static List<ListItem> getData()
     {
-        return me;
+        return items;
     }
 }

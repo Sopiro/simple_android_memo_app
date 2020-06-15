@@ -99,7 +99,7 @@
             android:id="@+id/new_memo_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@drawable/edittext_bg"
+            android:background="@drawable/outlined_bg"
 
             android:gravity="top"
             android:hint="@string/et_hint"
@@ -129,13 +129,17 @@
                 android:id="@+id/mew_memo_btnDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="삭제" />
+                android:backgroundTint="@color/colorPrimary"
+                android:text="삭제"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/mew_memo_btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="저장" />
+                android:backgroundTint="@color/colorPrimary"
+                android:text="저장"
+                android:textColor="@color/white" />
 
 
         </LinearLayout>

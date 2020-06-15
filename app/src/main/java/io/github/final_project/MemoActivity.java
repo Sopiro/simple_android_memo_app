@@ -1,5 +1,6 @@
 package io.github.final_project;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -53,9 +54,10 @@ public class MemoActivity extends AppCompatActivity
         int position = getIntent().getIntExtra("position", -1);
 
         isNew = position == -1;
-        String creationDate = position == -1 ? null : Data.getInstance().items.get(position).getCreationDate();
 
-        dbHelper = new DBHelper(MemoActivity.this);
+        String creationDate = position == -1 ? null : Data.getData().get(position).getCreationDate();
+
+        dbHelper = new DBHelper(this);
 
         // Load views
         tvTitle = findViewById(R.id.new_memo_title);
@@ -92,13 +94,21 @@ public class MemoActivity extends AppCompatActivity
                 dbHelper.updateMemo(creationDate, title, content, tags, stars);
 
             finish();
+            Utils.toast(this, R.string.saved);
         });
 
         btnDelete.setOnClickListener(v ->
         {
-            dbHelper.deleteMemo(creationDate);
-
-            finish();
+            AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+            dlg.setMessage(R.string.dlg_content);
+            dlg.setPositiveButton(R.string.yes, (dialog, which) ->
+            {
+                dbHelper.deleteMemo(creationDate);
+                finish();
+                Utils.toast(this, R.string.deleted);
+            });
+            dlg.setNegativeButton(R.string.no, (dialog, which) -> finish());
+            dlg.show();
         });
     }
 
@@ -131,7 +141,7 @@ public class MemoActivity extends AppCompatActivity
             if (tag.length() == 1)
                 continue;
 
-            tags += tag + " ";
+            tags += tag.substring(1) + " ";
         }
 
 //        Utils.log("title : " + title);

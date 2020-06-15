@@ -47,6 +47,11 @@ public class Utils
         Toast.makeText(context, "Work!", Toast.LENGTH_SHORT).show();
     }
 
+    public static void toast(Context context, int msg)
+    {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
     public static String getFormattedCurrentTime()
     {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

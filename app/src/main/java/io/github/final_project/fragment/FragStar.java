@@ -14,10 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import io.github.final_project.data.DBHelper;
-import io.github.final_project.data.Data;
 import io.github.final_project.R;
 import io.github.final_project.Utils;
+import io.github.final_project.data.DBHelper;
+import io.github.final_project.data.Data;
 
 public class FragStar extends BaseFragment
 {
@@ -44,14 +44,6 @@ public class FragStar extends BaseFragment
         llStars = view.findViewById(R.id.star_stars);
         ivStars = new ImageView[]{view.findViewById(R.id.star_star1), view.findViewById(R.id.star_star2), view.findViewById(R.id.star_star3)};
 
-        llStars.setOnClickListener(v ->
-        {
-            stars++;
-            if (stars >= 4) stars = 0;
-
-            updateStars();
-        });
-
         recyclerView = view.findViewById(R.id.star_rv);
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -61,7 +53,13 @@ public class FragStar extends BaseFragment
 
         dbHelper = new DBHelper(getContext());
 
-        updateList();
+        llStars.setOnClickListener(v ->
+        {
+            stars++;
+            if (stars >= 4) stars = 0;
+
+            updateStars();
+        });
 
         return view;
     }
@@ -80,19 +78,17 @@ public class FragStar extends BaseFragment
     @Override
     public void updateList()
     {
-        Data.getInstance().items.clear();
+        Data.getData().clear();
 
         db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM memo WHERE star = " + stars, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DBHelper.TABLE_NAME + " WHERE star = " + stars, null);
 
         while (cursor.moveToNext())
         {
             ListItem item = new ListItem(cursor.getString(0), cursor.getString(3), cursor.getString(4));
 
-            Utils.log(stars);
-
-            Data.getInstance().items.add(item);
+            Data.getData().add(item);
         }
 
         recyclerAdapter.notifyDataSetChanged();
@@ -104,6 +100,7 @@ public class FragStar extends BaseFragment
     {
         super.onResume();
 
-        updateList();
+        updateStars();
+        Utils.log("star" + Data.getData().size());
     }
 }

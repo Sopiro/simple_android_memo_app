@@ -9,4 +9,16 @@
     <string name="last">최종수정시간</string>
     <string name="encourage">메모를 추가하세요</string>
     <string name="star_guide">별점을 이용해 중요한 메모를 관리하세요</string>
+    <string name="deleted">삭제되었습니다</string>
+    <string name="saved">저장되었습니다</string>
+    <string-array name="spinner_array">
+        <item>제목</item>
+        <item>태그</item>
+        <item>내용</item>
+    </string-array>
+    <string-array name="array_data">
+        <item>title</item>
+        <item>tags</item>
+        <item>content</item>
+    </string-array>
 </resources>

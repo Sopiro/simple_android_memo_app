@@ -47,8 +47,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
         holder.icon.setImageResource(R.drawable.ic_fiber_manual_record_24px);
-        holder.title.setText(Data.getInstance().items.get(position).getTitle());
-        holder.lastDate.setText(Data.getInstance().items.get(position).getLastDate());
+        holder.title.setText(Data.getData().get(position).getTitle());
+        holder.lastDate.setText(Data.getData().get(position).getLastDate());
 
         // 제목을 기준으로 해쉬컬러를 생성하여 아이콘과 배경을 정함
         holder.icon.setColorFilter(Utils.getHashColor(holder.title.getText().toString()));
@@ -64,7 +64,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
             Intent intent = new Intent(parent.getContext(), MemoActivity.class);
             intent.putExtra("position", holder.getAdapterPosition());
 
-            parent.startActivityForResult(intent, 1001);
+            parent.startActivity(intent);
         });
 
         holder.itemView.setOnLongClickListener(v ->
@@ -75,9 +75,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
             {
                 int pos = holder.getAdapterPosition();
 
-                new DBHelper(parent.getContext()).deleteMemo(Data.getInstance().items.get(pos).getCreationDate());
+                new DBHelper(parent.getContext()).deleteMemo(Data.getData().get(pos).getCreationDate());
                 parent.updateList();
                 notifyItemRemoved(pos);
+                Utils.toast(parent.getContext(), R.string.deleted);
             });
 
             dlg.setNegativeButton(R.string.no, null);
@@ -90,6 +91,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
     @Override
     public int getItemCount()
     {
-        return Data.getInstance().items == null ? 0 : Data.getInstance().items.size();
+        return Data.getData() == null ? 0 : Data.getData().size();
     }
 }

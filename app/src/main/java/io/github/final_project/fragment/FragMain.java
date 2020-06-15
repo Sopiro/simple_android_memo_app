@@ -15,10 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import io.github.final_project.data.DBHelper;
-import io.github.final_project.data.Data;
 import io.github.final_project.MemoActivity;
 import io.github.final_project.R;
+import io.github.final_project.Utils;
+import io.github.final_project.data.DBHelper;
+import io.github.final_project.data.Data;
 
 public class FragMain extends BaseFragment
 {
@@ -61,31 +62,30 @@ public class FragMain extends BaseFragment
             startActivityForResult(intent, 1000);
         });
 
-        updateList();
-
         return view;
     }
 
     public void updateList()
     {
-        Data.getInstance().items.clear();
+        Data.getData().clear();
 
         db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM memo", null);
+        Cursor cursor = dbHelper.select(db, 1, 4, 5);
 
         while (cursor.moveToNext())
         {
-            ListItem item = new ListItem(cursor.getString(0), cursor.getString(3), cursor.getString(4));
+            ListItem item = new ListItem(cursor.getString(0), cursor.getString(1), cursor.getString(2));
 
-            Data.getInstance().items.add(item);
+            Data.getData().add(item);
         }
 
-        if (Data.getInstance().items.size() != 0)
+        if (Data.getData().size() != 0)
             tvEncourage.setVisibility(View.INVISIBLE);
         else
             tvEncourage.setVisibility(View.VISIBLE);
 
+        recyclerAdapter.notifyDataSetChanged();
         db.close();
     }
 
@@ -110,13 +110,12 @@ public class FragMain extends BaseFragment
         }
     }
 
-
     @Override
     public void onResume()
     {
         super.onResume();
 
         updateList();
-        recyclerAdapter.notifyDataSetChanged();
+        Utils.log("main" + Data.getData().size());
     }
 }

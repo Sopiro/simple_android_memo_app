@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import io.github.final_project.fragment.ViewPagerAdapter;
 
+
 public class MainActivity extends AppCompatActivity
 {
     @Override
