@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import io.github.final_project.R;
-import io.github.final_project.Utils;
 import io.github.final_project.data.DBHelper;
 import io.github.final_project.data.Data;
 
@@ -33,7 +32,6 @@ public class FragStar extends BaseFragment
     private int stars = 0;
 
     private DBHelper dbHelper;
-    private SQLiteDatabase db;
 
     @Nullable
     @Override
@@ -58,13 +56,14 @@ public class FragStar extends BaseFragment
             stars++;
             if (stars >= 4) stars = 0;
 
-            updateStars();
+            updateList();
         });
 
         return view;
     }
 
-    private void updateStars()
+    @Override
+    public void updateList()
     {
         int target = stars == 0 ? R.drawable.ic_star_border_24px : R.drawable.ic_star_24px;
         int counts = stars == 0 ? ivStars.length : stars;
@@ -72,16 +71,9 @@ public class FragStar extends BaseFragment
         for (int i = 0; i < counts; i++)
             ivStars[i].setImageResource(target);
 
-        updateList();
-    }
-
-    @Override
-    public void updateList()
-    {
         Data.getData().clear();
 
-        db = dbHelper.getReadableDatabase();
-
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = dbHelper.selectWhere(db, 6, String.valueOf(stars), 1, 4, 5);
 
         while (cursor.moveToNext())
@@ -93,13 +85,6 @@ public class FragStar extends BaseFragment
 
         recyclerAdapter.notifyDataSetChanged();
         db.close();
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-
-        updateStars();
+        cursor.close();
     }
 }

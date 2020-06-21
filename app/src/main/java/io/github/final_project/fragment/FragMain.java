@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import io.github.final_project.MemoActivity;
 import io.github.final_project.R;
+import io.github.final_project.Utils;
 import io.github.final_project.data.DBHelper;
 import io.github.final_project.data.Data;
 
@@ -31,7 +32,6 @@ public class FragMain extends BaseFragment
     private TextView tvEncourage;
 
     private DBHelper dbHelper;
-    private SQLiteDatabase db;
 
     @Nullable
     @Override
@@ -68,8 +68,7 @@ public class FragMain extends BaseFragment
     {
         Data.getData().clear();
 
-        db = dbHelper.getReadableDatabase();
-
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = dbHelper.select(db, 1, 4, 5);
 
         while (cursor.moveToNext())
@@ -85,35 +84,17 @@ public class FragMain extends BaseFragment
             tvEncourage.setVisibility(View.VISIBLE);
 
         recyclerAdapter.notifyDataSetChanged();
+
         db.close();
+        cursor.close();
     }
 
     private void resetDB()
     {
-        db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         dbHelper.onUpgrade(db, 1, 2);
 
         db.close();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        switch (requestCode)
-        {
-            case 1000:
-                break;
-            case 1001:
-                break;
-        }
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-
-        updateList();
     }
 }

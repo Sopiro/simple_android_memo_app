@@ -13,7 +13,7 @@ import io.github.final_project.Utils;
 public class DBHelper extends SQLiteOpenHelper
 {
     private static final String DB_NAME = "final";
-    public static final String TABLE_NAME = "memo";
+    private static final String TABLE_NAME = "memo";
 
     private static final HashMap<Integer, String[]> schema = new HashMap<>();
 
@@ -23,6 +23,7 @@ public class DBHelper extends SQLiteOpenHelper
     {
         super(context, DB_NAME, null, 1);
 
+        // Build schema
         if (schema.size() != 6)
         {
             schema.put(1, context.getResources().getStringArray(R.array.db_col_1));
@@ -46,7 +47,6 @@ public class DBHelper extends SQLiteOpenHelper
             sqlBuilder.append(line[0]).append(" ").append(line[1]).append(", ");
         }
         String sql = sqlBuilder.toString();
-
         sql = sql.substring(0, sql.length() - 2).concat(")");
 
         db.execSQL(sql);
@@ -59,6 +59,11 @@ public class DBHelper extends SQLiteOpenHelper
         onCreate(db);
     }
 
+    /**
+     * This function returns result
+     *
+     * @param select -1 will return all column info.
+     */
     public Cursor select(SQLiteDatabase db, int... select)
     {
         StringBuilder sql = new StringBuilder("SELECT ");
@@ -140,7 +145,9 @@ public class DBHelper extends SQLiteOpenHelper
     {
         db = getWritableDatabase();
 
-        db.execSQL("UPDATE " + TABLE_NAME + " SET title = ?, content = ?, tags = ?, last_date = ?, star = ? WHERE creation_date = '" + creationDate + "'",
+        db.execSQL("UPDATE " + TABLE_NAME +
+                        " SET title = ?, content = ?, tags = ?, last_date = ?, star = ?" +
+                        "WHERE creation_date = '" + creationDate + "'",
                 new Object[]{title, content, tags, Utils.getFormattedCurrentTime(), stars});
 
         db.close();

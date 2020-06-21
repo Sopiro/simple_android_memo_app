@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="db_name">final</string>
+    <string name="table_name">memo</string>
+
     <string-array name="db_col_1">
         <item>title</item>
         <item>varchar(100) not null</item>

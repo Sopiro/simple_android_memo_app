@@ -130,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="삭제"
+                android:text="@string/delete"
                 android:textColor="@color/white" />
 
             <Button
@@ -138,7 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="저장"
+                android:text="@string/save"
                 android:textColor="@color/white" />
 
 

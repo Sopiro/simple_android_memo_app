@@ -20,6 +20,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
 {
     private BaseFragment parent;
 
+    private final int LIST_ALPHA = 0x55;
+
     public RecyclerAdapter(BaseFragment parent)
     {
         this.parent = parent;
@@ -54,13 +56,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
         holder.icon.setColorFilter(Utils.getHashColor(holder.title.getText().toString()));
         holder.outline.getBackground().setTint(Utils.getHashColor(holder.title.getText().toString()));
         holder.outline.getBackground().setTintMode(PorterDuff.Mode.SRC_IN);
-        holder.outline.getBackground().setAlpha(0x55);
+        holder.outline.getBackground().setAlpha(LIST_ALPHA);
 
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(v ->
         {
-            String name = holder.title.getText().toString();
-
             Intent intent = new Intent(parent.getContext(), MemoActivity.class);
             intent.putExtra("position", holder.getAdapterPosition());
 
@@ -76,7 +76,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
                 int pos = holder.getAdapterPosition();
 
                 new DBHelper(parent.getContext()).deleteMemo(Data.getData().get(pos).getCreationDate());
+
                 parent.updateList();
+
                 notifyItemRemoved(pos);
                 Utils.toast(parent.getContext(), R.string.deleted);
             });

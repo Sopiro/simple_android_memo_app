@@ -37,7 +37,6 @@ public class FragSearch extends BaseFragment
     private String[] items;
 
     private DBHelper dbHelper;
-    private SQLiteDatabase db;
 
     private int currentItem;
 
@@ -94,7 +93,7 @@ public class FragSearch extends BaseFragment
     {
         Data.getData().clear();
 
-        db = dbHelper.getReadableDatabase();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String pattern = etSearch.getText().toString();
 
@@ -114,19 +113,6 @@ public class FragSearch extends BaseFragment
 
         recyclerAdapter.notifyDataSetChanged();
         db.close();
-    }
-
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-
-        updateList();
+        cursor.close();
     }
 }
