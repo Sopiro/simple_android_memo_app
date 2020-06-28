@@ -78,11 +78,7 @@ public class FragMain extends BaseFragment
             Data.getData().add(item);
         }
 
-        if (Data.getData().size() != 0)
-            tvEncourage.setVisibility(View.INVISIBLE);
-        else
-            tvEncourage.setVisibility(View.VISIBLE);
-
+        tvEncourage.setVisibility(Data.getData().size() != 0 ? View.INVISIBLE : View.VISIBLE);
         recyclerAdapter.notifyDataSetChanged();
 
         db.close();

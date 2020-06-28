@@ -19,12 +19,14 @@ import io.github.final_project.data.Data;
 public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
 {
     private BaseFragment parent;
+    private DBHelper dbHelper;
 
     private final int LIST_ALPHA = 0x55;
 
     public RecyclerAdapter(BaseFragment parent)
     {
         this.parent = parent;
+        this.dbHelper = new DBHelper(parent.getContext());
     }
 
     @NonNull
@@ -76,10 +78,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
                 int pos = holder.getAdapterPosition();
 
                 new DBHelper(parent.getContext()).deleteMemo(Data.getData().get(pos).getCreationDate());
-
-                parent.updateList();
-
+                Data.getData().remove(pos);
                 notifyItemRemoved(pos);
+                if (Data.getData().size() == 0) parent.updateList();
                 Utils.toast(parent.getContext(), R.string.deleted);
             });
 
