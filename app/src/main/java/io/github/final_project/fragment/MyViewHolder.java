@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import io.github.final_project.R;
 
+// 리사이클러뷰에 사용되는 뷰홀더
 class MyViewHolder extends RecyclerView.ViewHolder
 {
     LinearLayout outline;

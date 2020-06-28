@@ -32,13 +32,14 @@ public class FragMain extends BaseFragment
     {
         View view = inflater.inflate(R.layout.frag_main, container, false);
 
+        // 리사이클러뷰 설정.
         RecyclerView recyclerView = view.findViewById(R.id.main_rv);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-
         recyclerAdapter = new RecyclerAdapter(this);
         recyclerView.setAdapter(recyclerAdapter);
 
+        // 뷰 가져옴.
         ImageButton btnAdd = view.findViewById(R.id.main_btn_add);
         tvEncourage = view.findViewById(R.id.main_encourage);
 
@@ -57,6 +58,7 @@ public class FragMain extends BaseFragment
         return view;
     }
 
+    // 모든 메모를 가져와 리사이클러뷰에 넣음
     public void updateList()
     {
         Data.getData().clear();
@@ -78,6 +80,7 @@ public class FragMain extends BaseFragment
         db.close();
     }
 
+    // DB초기화 메소드
     private void resetDB()
     {
         SQLiteDatabase db = dbHelper.getWritableDatabase();

@@ -1,5 +1,6 @@
 package io.github.final_project.fragment;
 
+// 리사이클러뷰의 아이템으로 사용되는 클래스
 public class ListItem
 {
     private String title;

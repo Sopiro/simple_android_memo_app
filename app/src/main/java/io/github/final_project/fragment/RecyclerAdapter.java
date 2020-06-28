@@ -18,9 +18,11 @@ import io.github.final_project.data.Data;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
 {
+    // 이 리사이클러뷰를 소유하고있는 프래그먼트.
     private BaseFragment parent;
 
     private static final int LIST_ALPHA = 0x55;
+    // 애니메이션을 위한 상수
     private static final float ANIM_SCALE = 0.9f;
     private static final float ANIM_TRANSLATION = -50f;
     private static final int ANIM_DURATION = 100;

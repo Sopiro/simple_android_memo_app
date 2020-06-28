@@ -1,6 +1,5 @@
 package io.github.final_project;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,7 +23,7 @@ public class MemoActivity extends AppCompatActivity
 {
     private DBHelper dbHelper;
 
-    // Views inside this activity
+    // 뷰들.
     private TextView tvTitle;
     private ImageView[] ivStars;
     private TextView tvCreation_date;
@@ -33,6 +32,7 @@ public class MemoActivity extends AppCompatActivity
 
     private boolean isNew;
 
+    // 현재 액티비티의 내용
     private String title;
     private String content;
     private int stars;
@@ -65,6 +65,7 @@ public class MemoActivity extends AppCompatActivity
         Button btnDelete = findViewById(R.id.mew_memo_btnDelete);
         Button btnSave = findViewById(R.id.mew_memo_btnSave);
 
+        // 별을 위한 업데이트콜백.
         llStars.setOnClickListener(v ->
         {
             stars++;
@@ -73,6 +74,7 @@ public class MemoActivity extends AppCompatActivity
             updateStars();
         });
 
+        // 새 메모가 아닌경우 기존의 데이터를 로드하고 버튼의 텍스트도 알맞게 바꿈.
         if (!isNew)
         {
             loadData(creationDate);
@@ -81,6 +83,7 @@ public class MemoActivity extends AppCompatActivity
             btnDelete.setText(R.string.delete);
         }
 
+        // 저장버튼을 누르면 메모를 DB에 저장.
         btnSave.setOnClickListener(v ->
         {
             if (!etContent.getText().toString().equals(""))
@@ -97,6 +100,7 @@ public class MemoActivity extends AppCompatActivity
             finish();
         });
 
+        // 삭제 버튼을 누르면 메모를 DB에서 삭제.
         btnDelete.setOnClickListener(v ->
         {
             if (isNew)
@@ -127,6 +131,7 @@ public class MemoActivity extends AppCompatActivity
             ivStars[i].setImageResource(target);
     }
 
+    // 메모내용에서 첫줄은 제목으로 쓰고 #이후 내용은 태그로 저장하기 위한 parse 메소드.
     private void parse()
     {
         content = etContent.getText().toString();
@@ -148,6 +153,7 @@ public class MemoActivity extends AppCompatActivity
         }
     }
 
+    // 새 메모가 아닌경우 DB에서 데이터를 로드함.
     private void loadData(String creationDate)
     {
         SQLiteDatabase db = dbHelper.getReadableDatabase();

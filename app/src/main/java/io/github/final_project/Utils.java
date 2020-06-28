@@ -2,7 +2,6 @@ package io.github.final_project;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -62,20 +61,18 @@ public class Utils
             e.printStackTrace();
         }
 
-        log(date.substring(0, 10));
-
         passed /= MILLISECOND;
         passed++;
         if (passed <= SECOND) return passed + "초전";
         passed /= SECOND;
         passed++;
-        if (SECOND > passed && passed <= MINUTE) return passed + "분전";
+        if (SECOND > passed) return passed + "분전";
         passed /= MINUTE;
         passed++;
-        if (MINUTE > passed && passed <= HOUR) return passed + "시간전";
+        if (MINUTE > passed) return passed + "시간전";
         passed /= HOUR;
         passed++;
-        if (HOUR > passed && passed <= DAY) return passed + "일전 수정됨";
+        if (HOUR > passed) return passed + "일전 수정됨";
 
         return date.substring(0, 10).replaceFirst("-", "년 ").replaceFirst("-", "월 ") + "일 수정됨";
     }

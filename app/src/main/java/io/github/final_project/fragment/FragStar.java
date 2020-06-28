@@ -34,15 +34,16 @@ public class FragStar extends BaseFragment
         LinearLayout llStars = view.findViewById(R.id.star_stars);
         ivStars = new ImageView[]{view.findViewById(R.id.star_star1), view.findViewById(R.id.star_star2), view.findViewById(R.id.star_star3)};
 
+        // 리사이클러뷰 설정.
         RecyclerView recyclerView = view.findViewById(R.id.star_rv);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-
         recyclerAdapter = new RecyclerAdapter(this);
         recyclerView.setAdapter(recyclerAdapter);
 
         dbHelper = new DBHelper(getContext());
 
+        // 별을 누르면 별이 올라가도록하고 누를때 마다 리스트를 업데이트함.
         llStars.setOnClickListener(v ->
         {
             stars++;
@@ -59,12 +60,14 @@ public class FragStar extends BaseFragment
     {
         Data.getData().clear();
 
+        // 별 표시를 위한 코드.
         int target = stars == 0 ? R.drawable.ic_star_border_24px : R.drawable.ic_star_24px;
         int counts = stars == 0 ? ivStars.length : stars;
 
         for (int i = 0; i < counts; i++)
             ivStars[i].setImageResource(target);
 
+        // 별 수에 맞는 데이터들만 불러와 리스트에 추가함.
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = dbHelper.selectWhere(db, 6, String.valueOf(stars), 1, 4, 5);
 

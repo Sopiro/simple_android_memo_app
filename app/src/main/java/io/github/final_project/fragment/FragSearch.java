@@ -37,10 +37,10 @@ public class FragSearch extends BaseFragment
     {
         View view = inflater.inflate(R.layout.frag_search, container, false);
 
+        // 리사이클러뷰 설정.
         RecyclerView recyclerView = view.findViewById(R.id.search_rv);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-
         recyclerAdapter = new RecyclerAdapter(this);
         recyclerView.setAdapter(recyclerAdapter);
 
@@ -54,11 +54,8 @@ public class FragSearch extends BaseFragment
         dbHelper = new DBHelper(getContext());
 
         spinnerFrame.setOnClickListener(v -> spinner.performClick());
-
-        btnSearch.setOnClickListener(v ->
-        {
-            updateList();
-        });
+        // 검색 버튼을 누르면 현재 입력창의 내용과 스피너에 선택된 내용을 이용해 리스트뷰를 업데이트함.
+        btnSearch.setOnClickListener(v -> updateList());
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -83,12 +80,16 @@ public class FragSearch extends BaseFragment
     {
         Data.getData().clear();
 
+        // 검색용 패턴을 만듦.
+        // 태그일경우 양쪽을 #으로 묶어서 검색함
         String pattern = etSearch.getText().toString();
+
         if (currentItem != 1)
             pattern = "%" + pattern + "%";
         else
             pattern = "%#" + pattern + "#%";
 
+        // selectWhereLike메소드로 검색내용과 맞는 데이터만 가져와 리스트에 넣음.
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = dbHelper.selectWhereLike(db, Integer.valueOf(items[currentItem]), pattern, 1, 4, 5);
 

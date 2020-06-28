@@ -7,36 +7,40 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.HashMap;
 
-import io.github.final_project.R;
 import io.github.final_project.Utils;
 
 public class DBHelper extends SQLiteOpenHelper
 {
-    private static final String DB_NAME = "final";
-    private static final String TABLE_NAME = "memo";
-    private static HashMap<Integer, String[]> schema;
+    private static final String DB_NAME;
+    private static final String TABLE_NAME;
+    private static final HashMap<Integer, String[]> schema;
 
     private SQLiteDatabase db;
+
+    // static block에서 DB와 관련된 상수 초기화
+    static
+    {
+        DB_NAME = "final";
+        TABLE_NAME = "memo";
+
+        schema = new HashMap<>();
+        schema.put(1, new String[]{"title", "varchar(100) not null"});
+        schema.put(2, new String[]{"content", "text not null"});
+        schema.put(3, new String[]{"tags", "text"});
+        schema.put(4, new String[]{"creation_date", "datetime not null primary key"});
+        schema.put(5, new String[]{"last_date", "datetime not null"});
+        schema.put(6, new String[]{"star", "int not null"});
+    }
 
     public DBHelper(Context context)
     {
         super(context, DB_NAME, null, 1);
-
-        if (schema == null)
-        {
-            schema = new HashMap<>();
-            schema.put(1, context.getResources().getStringArray(R.array.db_col_1));
-            schema.put(2, context.getResources().getStringArray(R.array.db_col_2));
-            schema.put(3, context.getResources().getStringArray(R.array.db_col_3));
-            schema.put(4, context.getResources().getStringArray(R.array.db_col_4));
-            schema.put(5, context.getResources().getStringArray(R.array.db_col_5));
-            schema.put(6, context.getResources().getStringArray(R.array.db_col_6));
-        }
     }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
+        // schema 스트링 배열로부터 테이블 생성 SQL을 만들어서 실행함
         StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(");
         for (int i = 1; i <= schema.size(); i++)
         {
@@ -58,9 +62,8 @@ public class DBHelper extends SQLiteOpenHelper
         onCreate(db);
     }
 
+    // select로 지정한 column을 리턴함.
     /**
-     * This function returns result
-     *
      * @param select -1 will return all column info.
      */
     public Cursor select(SQLiteDatabase db, int... select)
@@ -88,6 +91,8 @@ public class DBHelper extends SQLiteOpenHelper
         return db.rawQuery(sql.toString(), null);
     }
 
+    // select from where에 대한 wrapper 메소드.
+    // 지정한 column과 같은 data를 리턴함.
     public Cursor selectWhere(SQLiteDatabase db, int thisColumn, String equalsToThis, int... select)
     {
         StringBuilder sql = new StringBuilder("SELECT ");
@@ -114,6 +119,8 @@ public class DBHelper extends SQLiteOpenHelper
         return db.rawQuery(sql.toString(), null);
     }
 
+    // select where like에 대한 wrapper 메소드.
+    // 지정한 column의 데이터와 like 명령이 같은 data를 리턴함. 검색기능 수행.
     public Cursor selectWhereLike(SQLiteDatabase db, int thisColumn, String looksLikeThis, int... select)
     {
         StringBuilder sql = new StringBuilder("SELECT ");
@@ -140,6 +147,7 @@ public class DBHelper extends SQLiteOpenHelper
         return db.rawQuery(sql.toString(), null);
     }
 
+    // 메모를 업데이트하는 메소드.
     public void updateMemo(String creationDate, String title, String content, String tags, int stars)
     {
         db = getWritableDatabase();
@@ -152,6 +160,7 @@ public class DBHelper extends SQLiteOpenHelper
         db.close();
     }
 
+    // 새 메모를 추가하는 메소드.
     public void newMemo(String title, String content, String tags, int stars)
     {
         if (content.equals(""))
@@ -168,6 +177,7 @@ public class DBHelper extends SQLiteOpenHelper
         db.close();
     }
 
+    // 메모를 삭제하는 메소드.
     public void deleteMemo(String creationDate)
     {
         db = getWritableDatabase();
