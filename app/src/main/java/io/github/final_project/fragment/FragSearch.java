@@ -18,24 +18,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import io.github.final_project.R;
-import io.github.final_project.Utils;
 import io.github.final_project.data.DBHelper;
 import io.github.final_project.data.Data;
 
 public class FragSearch extends BaseFragment
 {
-    private View view;
-
-    private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
     private RecyclerAdapter recyclerAdapter;
-    private ImageButton btnSearch;
     private EditText etSearch;
-
-    private LinearLayout spinnerFrame;
     private Spinner spinner;
     private String[] items;
-
     private DBHelper dbHelper;
 
     private int currentItem;
@@ -44,22 +35,21 @@ public class FragSearch extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        view = inflater.inflate(R.layout.frag_search, container, false);
+        View view = inflater.inflate(R.layout.frag_search, container, false);
 
-        recyclerView = view.findViewById(R.id.search_rv);
-        linearLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView recyclerView = view.findViewById(R.id.search_rv);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         recyclerAdapter = new RecyclerAdapter(this);
         recyclerView.setAdapter(recyclerAdapter);
 
-        btnSearch = view.findViewById(R.id.search_btn);
+        ImageButton btnSearch = view.findViewById(R.id.search_btn);
         etSearch = view.findViewById(R.id.search_et);
-
 
         items = getResources().getStringArray(R.array.array_data);
         spinner = view.findViewById(R.id.search_spinner);
-        spinnerFrame = view.findViewById(R.id.spinner_frame);
+        LinearLayout spinnerFrame = view.findViewById(R.id.spinner_frame);
 
         dbHelper = new DBHelper(getContext());
 
@@ -93,15 +83,13 @@ public class FragSearch extends BaseFragment
     {
         Data.getData().clear();
 
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         String pattern = etSearch.getText().toString();
-
         if (currentItem != 1)
             pattern = "%" + pattern + "%";
         else
             pattern = "%#" + pattern + "#%";
 
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = dbHelper.selectWhereLike(db, Integer.valueOf(items[currentItem]), pattern, 1, 4, 5);
 
         while (cursor.moveToNext())
@@ -112,7 +100,7 @@ public class FragSearch extends BaseFragment
         }
 
         recyclerAdapter.notifyDataSetChanged();
-        db.close();
         cursor.close();
+        db.close();
     }
 }

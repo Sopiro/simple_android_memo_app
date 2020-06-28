@@ -1,7 +1,7 @@
 package io.github.final_project;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -22,20 +22,14 @@ import io.github.final_project.data.Data;
 
 public class MemoActivity extends AppCompatActivity
 {
-    private Context context;
     private DBHelper dbHelper;
 
     // Views inside this activity
     private TextView tvTitle;
-    private LinearLayout llStars;
     private ImageView[] ivStars;
     private TextView tvCreation_date;
     private TextView tvLast_date;
     private EditText etContent;
-    private Button btnDelete;
-    private Button btnSave;
-
-    private SQLiteDatabase db;
 
     private boolean isNew;
 
@@ -49,7 +43,7 @@ public class MemoActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.memo);
+        setContentView(R.layout.activity_memo);
 
         int position = getIntent().getIntExtra("position", -1);
 
@@ -61,15 +55,15 @@ public class MemoActivity extends AppCompatActivity
 
         // Load views
         tvTitle = findViewById(R.id.new_memo_title);
-        llStars = findViewById(R.id.new_memo_star);
+        LinearLayout llStars = findViewById(R.id.new_memo_star);
 
         ivStars = new ImageView[]{findViewById(R.id.new_memo_star1), findViewById(R.id.new_memo_star2), findViewById(R.id.new_memo_star3)};
 
         tvCreation_date = findViewById(R.id.new_memo_creation_date);
         tvLast_date = findViewById(R.id.new_memo_last_date);
         etContent = findViewById(R.id.new_memo_content);
-        btnDelete = findViewById(R.id.mew_memo_btnDelete);
-        btnSave = findViewById(R.id.mew_memo_btnSave);
+        Button btnDelete = findViewById(R.id.mew_memo_btnDelete);
+        Button btnSave = findViewById(R.id.mew_memo_btnSave);
 
         llStars.setOnClickListener(v ->
         {
@@ -83,32 +77,44 @@ public class MemoActivity extends AppCompatActivity
         {
             loadData(creationDate);
             updateStars();
+
+            btnDelete.setText(R.string.delete);
         }
 
         btnSave.setOnClickListener(v ->
         {
-            parse();
-            if (isNew)
-                dbHelper.newMemo(title, content, tags, stars);
-            else
-                dbHelper.updateMemo(creationDate, title, content, tags, stars);
+            if (!etContent.getText().toString().equals(""))
+            {
+                parse();
+                if (isNew)
+                    dbHelper.newMemo(title, content, tags, stars);
+                else
+                    dbHelper.updateMemo(creationDate, title, content, tags, stars);
+
+                Utils.toast(this, R.string.saved);
+            }
 
             finish();
-            Utils.toast(this, R.string.saved);
         });
 
         btnDelete.setOnClickListener(v ->
         {
-            AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-            dlg.setMessage(R.string.dlg_content);
-            dlg.setPositiveButton(R.string.yes, (dialog, which) ->
+            if (isNew)
             {
-                dbHelper.deleteMemo(creationDate);
                 finish();
-                Utils.toast(this, R.string.deleted);
-            });
-            dlg.setNegativeButton(R.string.no, (dialog, which) -> finish());
-            dlg.show();
+            } else
+            {
+                AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+                dlg.setMessage(R.string.dlg_content);
+                dlg.setPositiveButton(R.string.yes, (dialog, which) ->
+                {
+                    dbHelper.deleteMemo(creationDate);
+                    finish();
+                    Utils.toast(this, R.string.deleted);
+                });
+                dlg.setNegativeButton(R.string.no, (dialog, which) -> finish());
+                dlg.show();
+            }
         });
     }
 
@@ -124,9 +130,7 @@ public class MemoActivity extends AppCompatActivity
     private void parse()
     {
         content = etContent.getText().toString();
-
-        if (content.equals(""))
-            return;
+        if (content.equals("")) return;
 
         title = content.split("\\n")[0];
 
@@ -138,8 +142,7 @@ public class MemoActivity extends AppCompatActivity
         while (matcher.find())
         {
             String tag = matcher.group();
-            if (tag.length() == 1)
-                continue;
+            if (tag.length() == 1) continue;
 
             tags += tag.substring(1) + "#";
         }
@@ -147,17 +150,18 @@ public class MemoActivity extends AppCompatActivity
 
     private void loadData(String creationDate)
     {
-        db = dbHelper.getReadableDatabase();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = dbHelper.selectWhere(db, 4, creationDate, -1);
-
-        while (cursor.moveToNext())
+        try (Cursor cursor = dbHelper.selectWhere(db, 4, creationDate, -1))
         {
-            tvTitle.setText(cursor.getString(0));
-            etContent.setText(cursor.getString(1));
-            tvCreation_date.setText(tvCreation_date.getText() + " " + cursor.getString(3));
-            tvLast_date.setText(tvLast_date.getText() + " " + cursor.getString(4));
-            stars = Integer.parseInt(cursor.getString(5));
+            while (cursor.moveToNext())
+            {
+                tvTitle.setText(cursor.getString(0));
+                etContent.setText(cursor.getString(1));
+                tvCreation_date.setText(tvCreation_date.getText() + " " + cursor.getString(3));
+                tvLast_date.setText(tvLast_date.getText() + " " + cursor.getString(4));
+                stars = Integer.parseInt(cursor.getString(5));
+            }
         }
 
         db.close();

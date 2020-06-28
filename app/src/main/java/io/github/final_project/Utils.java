@@ -2,44 +2,30 @@ package io.github.final_project;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Utils
 {
     private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
-    public static int getHashColor(String string, int transparency)
-    {
-        // Generate hash color based on title
-        int hashColor = (string.hashCode() & 0xffffff) + (transparency << 28);
-
-        return hashColor;
-    }
+    private static final int MILLISECOND = 1000;
+    private static final int SECOND = 60;
+    private static final int MINUTE = SECOND * 60;
+    private static final int HOUR = MINUTE * 60;
+    private static final int DAY = HOUR * 24;
 
     public static int getHashColor(String string)
     {
-        return getHashColor(string, 0xff);
-    }
-
-    public static void log()
-    {
-        log("@@@");
+        return (string.hashCode() & 0xffffff) + (0xff << 28);
     }
 
     public static void log(Object msg)
     {
         msg = msg == null ? "null!" : msg;
-
-//        try
-//        {
-//            throw new Exception();
-//        } catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
 
         Log.d("@@@", msg.toString());
     }
@@ -59,5 +45,38 @@ public class Utils
         SimpleDateFormat formatter = new SimpleDateFormat(DATETIME_FORMAT);
 
         return formatter.format(new Date());
+    }
+
+    public static String getDateString(String date)
+    {
+        long now = System.currentTimeMillis();
+        long passed = 0;
+
+        try
+        {
+            Date last = new SimpleDateFormat(DATETIME_FORMAT).parse(date);
+            passed = now - last.getTime();
+
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        log(date.substring(0, 10));
+
+        passed /= MILLISECOND;
+        passed++;
+        if (passed <= SECOND) return passed + "초전";
+        passed /= SECOND;
+        passed++;
+        if (SECOND > passed && passed <= MINUTE) return passed + "분전";
+        passed /= MINUTE;
+        passed++;
+        if (MINUTE > passed && passed <= HOUR) return passed + "시간전";
+        passed /= HOUR;
+        passed++;
+        if (HOUR > passed && passed <= DAY) return passed + "일전 수정됨";
+
+        return date.substring(0, 10).replaceFirst("-", "년 ").replaceFirst("-", "월 ") + "일 수정됨";
     }
 }

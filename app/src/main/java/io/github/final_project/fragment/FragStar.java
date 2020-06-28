@@ -20,30 +20,22 @@ import io.github.final_project.data.Data;
 
 public class FragStar extends BaseFragment
 {
-    private View view;
-
-    private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
     private RecyclerAdapter recyclerAdapter;
-
-    private LinearLayout llStars;
     private ImageView[] ivStars;
-
     private int stars = 0;
-
     private DBHelper dbHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        view = inflater.inflate(R.layout.frag_star, container, false);
+        View view = inflater.inflate(R.layout.frag_star, container, false);
 
-        llStars = view.findViewById(R.id.star_stars);
+        LinearLayout llStars = view.findViewById(R.id.star_stars);
         ivStars = new ImageView[]{view.findViewById(R.id.star_star1), view.findViewById(R.id.star_star2), view.findViewById(R.id.star_star3)};
 
-        recyclerView = view.findViewById(R.id.star_rv);
-        linearLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView recyclerView = view.findViewById(R.id.star_rv);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         recyclerAdapter = new RecyclerAdapter(this);
@@ -65,13 +57,13 @@ public class FragStar extends BaseFragment
     @Override
     public void updateList()
     {
+        Data.getData().clear();
+
         int target = stars == 0 ? R.drawable.ic_star_border_24px : R.drawable.ic_star_24px;
         int counts = stars == 0 ? ivStars.length : stars;
 
         for (int i = 0; i < counts; i++)
             ivStars[i].setImageResource(target);
-
-        Data.getData().clear();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = dbHelper.selectWhere(db, 6, String.valueOf(stars), 1, 4, 5);

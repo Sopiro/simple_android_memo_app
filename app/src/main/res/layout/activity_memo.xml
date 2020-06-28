@@ -42,21 +42,21 @@
                 android:id="@+id/new_memo_star1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/star"
+                android:tint="@color/black"
                 app:srcCompat="@drawable/ic_star_border_24px" />
 
             <ImageView
                 android:id="@+id/new_memo_star2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/star"
+                android:tint="@color/black"
                 app:srcCompat="@drawable/ic_star_border_24px" />
 
             <ImageView
                 android:id="@+id/new_memo_star3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/star"
+                android:tint="@color/black"
                 app:srcCompat="@drawable/ic_star_border_24px" />
         </LinearLayout>
 
@@ -130,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="@string/delete"
+                android:text="@string/cancel"
                 android:textColor="@color/white" />
 
             <Button

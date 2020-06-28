@@ -19,14 +19,15 @@ import io.github.final_project.data.Data;
 public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
 {
     private BaseFragment parent;
-    private DBHelper dbHelper;
 
-    private final int LIST_ALPHA = 0x55;
+    private static final int LIST_ALPHA = 0x55;
+    private static final float ANIM_SCALE = 0.9f;
+    private static final float ANIM_TRANSLATION = -50f;
+    private static final int ANIM_DURATION = 100;
 
-    public RecyclerAdapter(BaseFragment parent)
+    RecyclerAdapter(BaseFragment parent)
     {
         this.parent = parent;
-        this.dbHelper = new DBHelper(parent.getContext());
     }
 
     @NonNull
@@ -35,9 +36,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
     {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
 
-        MyViewHolder holder = new MyViewHolder(view);
-
-        return holder;
+        return new MyViewHolder(view);
     }
 
     /*
@@ -52,7 +51,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
     {
         holder.icon.setImageResource(R.drawable.ic_fiber_manual_record_24px);
         holder.title.setText(Data.getData().get(position).getTitle());
-        holder.lastDate.setText(Data.getData().get(position).getLastDate());
+        holder.lastDate.setText(Utils.getDateString(Data.getData().get(position).getCreationDate()));
 
         // 제목을 기준으로 해쉬컬러를 생성하여 아이콘과 배경을 정함
         holder.icon.setColorFilter(Utils.getHashColor(holder.title.getText().toString()));
@@ -60,8 +59,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
         holder.outline.getBackground().setTintMode(PorterDuff.Mode.SRC_IN);
         holder.outline.getBackground().setAlpha(LIST_ALPHA);
 
-        holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(v ->
+        View view = holder.itemView;
+
+        view.setTag(position);
+        view.setOnClickListener(v ->
         {
             Intent intent = new Intent(parent.getContext(), MemoActivity.class);
             intent.putExtra("position", holder.getAdapterPosition());
@@ -69,10 +70,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
             parent.startActivity(intent);
         });
 
-        holder.itemView.setOnLongClickListener(v ->
+        view.setOnLongClickListener(v ->
         {
+            view.animate().scaleX(ANIM_SCALE).scaleY(ANIM_SCALE).translationX(ANIM_TRANSLATION).setDuration(ANIM_DURATION);
+
             AlertDialog.Builder dlg = new AlertDialog.Builder(parent.getContext());
             dlg.setMessage(R.string.dlg_content);
+
             dlg.setPositiveButton(R.string.yes, (dialog, which) ->
             {
                 int pos = holder.getAdapterPosition();
@@ -80,11 +84,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>
                 new DBHelper(parent.getContext()).deleteMemo(Data.getData().get(pos).getCreationDate());
                 Data.getData().remove(pos);
                 notifyItemRemoved(pos);
+
                 if (Data.getData().size() == 0) parent.updateList();
                 Utils.toast(parent.getContext(), R.string.deleted);
             });
 
             dlg.setNegativeButton(R.string.no, null);
+            dlg.setOnDismissListener(dialog -> view.animate().scaleX(1.0f).scaleY(1.0f).translationX(0).setDuration(ANIM_DURATION));
+
             dlg.show();
 
             return true;

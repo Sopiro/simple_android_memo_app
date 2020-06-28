@@ -14,8 +14,7 @@ public class DBHelper extends SQLiteOpenHelper
 {
     private static final String DB_NAME = "final";
     private static final String TABLE_NAME = "memo";
-
-    private static final HashMap<Integer, String[]> schema = new HashMap<>();
+    private static HashMap<Integer, String[]> schema;
 
     private SQLiteDatabase db;
 
@@ -23,9 +22,9 @@ public class DBHelper extends SQLiteOpenHelper
     {
         super(context, DB_NAME, null, 1);
 
-        // Build schema
-        if (schema.size() != 6)
+        if (schema == null)
         {
+            schema = new HashMap<>();
             schema.put(1, context.getResources().getStringArray(R.array.db_col_1));
             schema.put(2, context.getResources().getStringArray(R.array.db_col_2));
             schema.put(3, context.getResources().getStringArray(R.array.db_col_3));

@@ -17,36 +17,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import io.github.final_project.MemoActivity;
 import io.github.final_project.R;
-import io.github.final_project.Utils;
 import io.github.final_project.data.DBHelper;
 import io.github.final_project.data.Data;
 
 public class FragMain extends BaseFragment
 {
-    private View view;
-
-    private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
     private RecyclerAdapter recyclerAdapter;
-    private ImageButton btnAdd;
     private TextView tvEncourage;
-
     private DBHelper dbHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        view = inflater.inflate(R.layout.frag_main, container, false);
+        View view = inflater.inflate(R.layout.frag_main, container, false);
 
-        recyclerView = view.findViewById(R.id.main_rv);
-        linearLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView recyclerView = view.findViewById(R.id.main_rv);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         recyclerAdapter = new RecyclerAdapter(this);
         recyclerView.setAdapter(recyclerAdapter);
 
-        btnAdd = view.findViewById(R.id.main_btn_add);
+        ImageButton btnAdd = view.findViewById(R.id.main_btn_add);
         tvEncourage = view.findViewById(R.id.main_encourage);
 
         dbHelper = new DBHelper(getContext());
@@ -81,16 +74,14 @@ public class FragMain extends BaseFragment
         tvEncourage.setVisibility(Data.getData().size() != 0 ? View.INVISIBLE : View.VISIBLE);
         recyclerAdapter.notifyDataSetChanged();
 
-        db.close();
         cursor.close();
+        db.close();
     }
 
     private void resetDB()
     {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         dbHelper.onUpgrade(db, 1, 2);
-
         db.close();
     }
 }

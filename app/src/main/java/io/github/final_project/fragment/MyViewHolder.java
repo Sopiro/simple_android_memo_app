@@ -10,20 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import io.github.final_project.R;
 
-public class MyViewHolder extends RecyclerView.ViewHolder
+class MyViewHolder extends RecyclerView.ViewHolder
 {
-    public LinearLayout outline;
-    public ImageView icon;
-    public TextView title;
-    public TextView lastDate;
+    LinearLayout outline;
+    ImageView icon;
+    TextView title;
+    TextView lastDate;
 
-    public MyViewHolder(@NonNull View itemView)
+    MyViewHolder(@NonNull View itemView)
     {
         super(itemView);
 
-        this.outline = itemView.findViewById(R.id.list_item_outline);
-        this.icon = itemView.findViewById(R.id.list_item_icon);
-        this.title = itemView.findViewById(R.id.list_item_title);
-        this.lastDate = itemView.findViewById(R.id.list_item_date);
+        outline = itemView.findViewById(R.id.list_item_outline);
+        icon = itemView.findViewById(R.id.list_item_icon);
+        title = itemView.findViewById(R.id.list_item_title);
+        lastDate = itemView.findViewById(R.id.list_item_date);
     }
 }

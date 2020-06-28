@@ -41,21 +41,21 @@
                 android:id="@+id/star_star1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/star"
+                android:tint="@color/black"
                 app:srcCompat="@drawable/ic_star_border_24px" />
 
             <ImageView
                 android:id="@+id/star_star2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/star"
+                android:tint="@color/black"
                 app:srcCompat="@drawable/ic_star_border_24px" />
 
             <ImageView
                 android:id="@+id/star_star3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/star"
+                android:tint="@color/black"
                 app:srcCompat="@drawable/ic_star_border_24px" />
         </LinearLayout>
 
