@@ -14,9 +14,10 @@ public class Utils
     private static final int MILLISECOND = 1000;
     private static final int SECOND = 60;
     private static final int MINUTE = SECOND * 60;
-    private static final int HOUR = MINUTE * 60;
-    private static final int DAY = HOUR * 24;
+    private static final int HOUR = MINUTE * 24;
+    private static final int DAY = MINUTE * 30;
 
+    // 해당 문제의 해쉬를이용해 색을 만듦.
     public static int getHashColor(String string)
     {
         return (string.hashCode() & 0xffffff) + (0xff << 28);
@@ -46,6 +47,7 @@ public class Utils
         return formatter.format(new Date());
     }
 
+    // 지난 시간을 계산하여 표시해주기위한 메소드
     public static String getDateString(String date)
     {
         long now = System.currentTimeMillis();
@@ -73,7 +75,9 @@ public class Utils
         passed /= HOUR;
         passed++;
         if (HOUR > passed) return passed + "일전 수정됨";
-
-        return date.substring(0, 10).replaceFirst("-", "년 ").replaceFirst("-", "월 ") + "일 수정됨";
+        else
+        {
+            return date.substring(0, 10).replaceFirst("-", "년 ").replaceFirst("-", "월 ") + "일 수정됨";
+        }
     }
 }
